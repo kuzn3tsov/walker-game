@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="JS lesson - Game 2">
+    <meta name="author" content="Lem Treursić">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Walker — Fun Mini Game</title>
+
+    <script type="text/javascript" src="./script.js" defer></script>
+
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">
+        <div class="badge">Star Walker</div>
+        <div class="subtitle">Sakupljajte zvjezdice, izbjegavajte neprijatelje, preživite!</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="primary">Start</button>
+        <button id="pauseBtn">Pauza</button>
+        <button id="restartBtn">Restart</button>
+      </div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+      <div class="hud" id="hud">
+        <div>Rezultat: <span id="score">0</span></div>
+        <div>Level: <span id="level">1</span></div>
+        <div>Životi: <span id="lives">3</span></div>
+        <div class="big">Vrijeme: <span id="time">00:00</span></div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="instructions">
+        Kontrole: Strelice / WASD za pomicanje. Na mobitelu koristite strelice na ekranu.
+      </div>
+      <div class="meta"><strong id="target">Mete: 5</strong></div>
+    </div>
+
+    <div class="mobile-joy" id="mobileJoy">
+      <button data-dir="up">▲</button>
+      <button data-dir="left">◀</button>
+      <button data-dir="down">▼</button>
+      <button data-dir="right">▶</button>
+    </div>
+  </div>
+</body>
+
+</html>
