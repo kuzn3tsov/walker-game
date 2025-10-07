@@ -1,0 +1,553 @@
+/* ===========================================================
+   STAR EATER  -  style.css
+   Retro arkadna igra u pixel stilu
+   =========================================================== */
+
+/* ---------- GLOBALNI IZGLED ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    touch-action: none;
+    overflow: hidden;
+}
+
+/* ---------- GLAVNO PODRUČJE IGRE ---------- */
+#game-area {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: #111;
+    border: 4px solid #0ff;
+    box-shadow: 0 0 25px #0ff;
+    overflow: hidden;
+}
+
+/* 🌠 Zvjezdice koje lagano "teku" i trepere */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: twinkleMove 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes twinkleMove {
+    0% {
+        opacity: 0.3;
+        transform: translateY(0) scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(4px) scale(1);
+    }
+
+    100% {
+        opacity: 0.4;
+        transform: translateY(8px) scale(0.9);
+    }
+}
+
+/* ---------- HUD (info traka gore) ---------- */
+#hud {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 95vw;
+    max-width: 1000px;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    z-index: 10;
+    color: #0ff;
+    font-size: 10px;
+}
+
+/* ---------- TEKSTUALNE INFORMACIJE ---------- */
+.hud-text {
+    text-shadow: 0 0 8px #0ff;
+    margin-top: 0px;
+}
+.hud-text-icon {
+    font-size: 1.2em;
+    color: #0ff;
+}
+.hud-control {
+    font-size: 0.6em;
+    color: #0ff;
+}
+.hud-wrapper {
+    margin-right: 15px;
+}
+
+/* ---------- KONTROLNE IKONE (Start, Pauza, Restart itd.) ---------- */
+#controls button {
+    background: none;
+    /* bez pozadine */
+    border: none;
+    /* bez obruba */
+    color: #0ff;
+    /* cyan ton */
+    font-size: 28px;
+    /* veće ikone */
+    cursor: pointer;
+    margin-left: 8px;
+    transition: transform 0.15s, color 0.15s;
+    text-shadow: 0 0 8px #0ff;
+}
+
+#controls button:hover {
+    transform: scale(1.2);
+    color: #fff;
+    text-shadow: 0 0 15px #0ff;
+}
+
+#controls button:active {
+    transform: scale(0.95);
+}
+
+#controls button:focus {
+    outline: none;
+}
+/* 👇 Forsiraj prikaz mobilnih tipki ako uređaj ima touch ekran */
+@media (pointer: coarse) {
+    .mobile-controls {
+        display: flex !important;
+    }
+}
+
+/* Raketa igrača */
+#player {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background: none;
+    /* Uklonjena žuta pozadina */
+}
+
+/* 🔹 Igrač i svemirci – povećani za 200% */
+#player i,
+.alien i {
+    font-size: 2em;
+    /* povećano sa 1em na 2em */
+    transform-origin: center;
+}
+
+/* 🔥 Plamen iza rakete (poravnat sa sredinom dna) */
+.flame {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, orange, red, transparent);
+    border-radius: 50%;
+    top: 80%;
+    /* smješten odmah ispod rakete */
+    left: 50%;
+    transform: translate(-50%, 0);
+    /* centrirano po širini */
+    opacity: 0.8;
+    animation: flicker 0.15s infinite;
+    filter: blur(1px);
+}
+/* 🔥 Pojačani plamen (kad je power-up aktivan) */
+.flame.power {
+    background: radial-gradient(circle, gold 40%, orange 70%, red 90%);
+    width: 14px;
+    height: 14px;
+    filter: blur(2px);
+    opacity: 1;
+    animation: flicker 0.1s infinite;
+}
+/* 🔹 Animacija titranja plamena */
+@keyframes flicker {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.5) translateY(2px);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 0.8;
+    }
+}
+
+/* Svemirci */
+.alien {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alien i {
+    font-size: 26px;
+}
+
+/* ⚡ Warp blink efekt pri promjeni smjera */
+.alien-blink {
+    filter: brightness(3) saturate(2);
+    animation: warpBlink 0.15s ease-out;
+}
+
+@keyframes warpBlink {
+    0% {
+        filter: brightness(3) saturate(2);
+    }
+
+    100% {
+        filter: brightness(1) saturate(1);
+    }
+}
+
+/* Mute gumb */
+#muteBtn i {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+/* Modal za intro i kraj igre */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #111;
+    color: #8ff;
+    border: 2px solid #8ff;
+    box-shadow: 0 0 20px #8ff;
+    padding: 20px 30px;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.modal-content button {
+    background: #0ff;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.modal-content button:hover {
+    background: #8ff;
+}
+/* ---------- SAKUPLJIVI OBJEKTI (zvjezdice i srce) ---------- */
+.collectible {
+    position: absolute;
+    font-size: 20px;
+    user-select: none;
+}
+
+.collectible.yellow {
+    color: gold;
+}
+
+.collectible.green {
+    color: greenyellow;
+}
+
+.collectible.rocket {
+    color: darkred;
+    text-shadow: 0 0 10px darkred;
+}
+
+.collectible.blue {
+    color: turquoise;
+    text-shadow: 0 0 10px turquoise;
+}
+
+/* ---------- EFEKTI BLJESKA IGRAČA PRI SUDARU ---------- */
+.flash-yellow {
+    box-shadow: 0 0 20px 5px gold;
+}
+
+.flash-green {
+    box-shadow: 0 0 20px 5px greenyellow;
+}
+
+.flash-blue {
+    box-shadow: 0 0 25px 8px turquoise;
+    animation: bluePulse 0.4s alternate infinite;
+}
+
+.flash-rocket {
+    box-shadow: 0 0 25px 8px darkred;
+}
+
+@keyframes bluePulse {
+    from {
+        filter: brightness(1);
+    }
+
+    to {
+        filter: brightness(1.6);
+    }
+}
+
+/* ---------- EFEKT NESTAJANJA DUHOVA (kada ih igrač pojede u plavom modu) ---------- */
+.vanish {
+    animation: vanishFade 0.3s forwards;
+}
+
+@keyframes vanishFade {
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+/* ---------- OVERLAYI (start, game over) ---------- */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 20;
+}
+
+.overlay h1,
+.overlay h2 {
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    margin-bottom: 20px;
+}
+
+.overlay button {
+    background: none;
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.overlay button:hover {
+    background: #0ff;
+    color: #000;
+}
+
+/* ---------- MOBILNE STRELICE ---------- */
+#mobileJoy {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    /* vidljivo samo na mobitelima */
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    z-index: 15;
+}
+
+#mobileJoy button {
+    background: #000;
+    color: #0ff;
+    border: 2px solid #0ff;
+    font-size: 22px;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    box-shadow: 0 0 6px #0ff;
+}
+
+#mobile-note {
+    display: none;
+}
+
+#desktop-note {
+    display: block;
+}
+
+/* ---------- MODAL S PRAVILIMA ---------- */
+.modal {
+    display: none;
+    /* skriven dok se ne otvori */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 50;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #111;
+    border: 2px solid #0ff;
+    box-shadow: 0 0 15px #0ff;
+    color: #0ff;
+    padding: 20px;
+    max-width: 480px;
+    font-size: 10px;
+    line-height: 1.6;
+    text-align: left;
+    position: relative;
+}
+
+.modal-content h2,
+.modal-content h3 {
+    color: #0ff;
+    text-shadow: 0 0 8px #0ff;
+    margin-bottom: 10px;
+}
+
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modal-content li {
+    margin-bottom: 6px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #0ff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.controls-note {
+    margin-top: 10px;
+    font-size: 9px;
+    color: #fff;
+}
+
+/* ---------- DODATNI EFEKTI ---------- */
+button,
+.collectible,
+#player,
+.alien {
+    transition: transform 0.1s;
+}
+
+button:hover,
+.collectible:hover {
+    transform: scale(1.1);
+}
+
+.alien,
+#player {
+    transition: transform 0.1s linear;
+}
+
+/* 📱 Mobilni prikaz i kontrole */
+@media (max-width: 768px) {
+
+    /* Game area - manji okvir i više mjesta za HUD i kontrole */
+    #game-area {
+        width: 90vw;
+        height: 65vh;
+        margin: 10vh auto 0;
+        border-width: 2px;
+    }
+
+    /* HUD - jedan red, manji font */
+    #hud {
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 0.9em;
+        gap: 0.4em;
+        padding: 4px;
+    }
+
+    /* Gumbi HUD-a */
+    #hud button,
+    #hud i {
+        font-size: 1.2em;
+        padding: 0.3em;
+    }
+
+    /* 📍Mobilne kontrole (strelice) */
+    .mobile-controls {
+        position: fixed;
+        bottom: 2vh;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 2.5vw;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+    }
+
+    .mobile-btn {
+        background: rgba(173, 216, 230, 0.15);
+        border: 2px solid #89e6ff;
+        border-radius: 12px;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+        color: #aefaff;
+        box-shadow: 0 0 10px #89e6ff33;
+        backdrop-filter: blur(2px);
+        transition: background 0.2s ease;
+    }
+
+    .mobile-btn:active {
+        background: rgba(173, 216, 230, 0.35);
+    }
+        #mobileJoy {
+            display: flex;
+        }
+
+        #mobile-note {
+            display: block;
+        }
+
+        #desktop-note {
+            display: none;
+        }
+
+}

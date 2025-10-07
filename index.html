@@ -1,53 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="JS lesson - Game 2">
-    <meta name="author" content="Lem Treursić">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Walker — Fun Mini Game</title>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Star Eater - Retro Arkadna Igra u kojoj preživljavaš i jedeš zvjezdice">
+  <meta name="author" content="Lem Treursić">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script type="text/javascript" src="./script.js" defer></script>
-
-    <link rel="stylesheet" href="./style.css" />
-  </head>
+  <title>Star Eater</title>
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/e0473aed86.js" crossorigin="anonymous"></script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <!-- css -->
+  <link rel="stylesheet" href="./css/style.css" />
+  <!-- js -->
+  <script type="text/javascript" src="./js/script.js" defer></script>
+</head>
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="title">
-        <div class="badge">Star Walker</div>
-        <div class="subtitle">Sakupljajte zvjezdice, izbjegavajte neprijatelje, preživite!</div>
-      </div>
-      <div class="controls">
-        <button id="startBtn" class="primary">Start</button>
-        <button id="pauseBtn">Pauza</button>
-        <button id="restartBtn">Restart</button>
-      </div>
+  <!-- HUD -->
+  <div id="hud">
+    <div id="stats">
+      <span class="hud-text-icon">
+        <i class="fa-solid fa-star"></i>
+      </span>
+      <span class="hud-text">Bodovi:</span>
+      <span id="score" class="hud-wrapper">0</span>
+      <span class="hud-text-icon">
+        <i class="fa-solid fa-trophy"></i>
+      </span>
+      <span class="hud-text">Rekord:</span>
+      <span id="highscore" class="hud-wrapper">0</span>
+      <span class="hud-text-icon">
+        <i class="fa-solid fa-earth-americas"></i>
+      </span>
+      <span class="hud-text">Razina:</span>
+      <span id="level" class="hud-wrapper">1</span>
+      <span class="hud-text-icon">
+        <i class="fa-solid fa-rocket"></i>
+      </span>
+      <span class="hud-text">Rakete:</span>
+      <span id="lives" class="hud-wrapper">3</span>
     </div>
-
-    <div class="game-area" id="gameArea">
-      <div class="hud" id="hud">
-        <div>Rezultat: <span id="score">0</span></div>
-        <div>Level: <span id="level">1</span></div>
-        <div>Životi: <span id="lives">3</span></div>
-        <div class="big">Vrijeme: <span id="time">00:00</span></div>
-      </div>
+    <div id="controls">
+      <button id="startBtn" title="Pokreni igru">
+        <span  class="hud-control">
+          <i class="fa-solid fa-play"></i>
+        </span>
+      </button>
+      <button id="pauseBtn" title="Pauza">
+        <span class="hud-control">
+          <i class="fa-solid fa-pause"></i>
+        </span>
+      </button>
+      <button id="restartBtn" title="Igraj ponovno">
+        <span class="hud-control">
+        <i class="fa-solid fa-repeat"></i>
+      </span>
+    </button>
+      <button id="muteBtn" title="Zvuk">
+        <span class="hud-control">
+          <i class="fa-solid fa-volume-high"></i>
+        </span>
+      </button>
+      <button id="infoBtn" title="Pravila">
+        <span class="hud-control">
+          <i class="fa-solid fa-info"></i>
+        </span>
+      </button>
+      <button id="fsBtn" title="Cijeli ekran">
+        <span class="hud-control">
+          <i class="fa-solid fa-expand"></i>
+        </span>
+      </button>
     </div>
+  </div>
 
-    <div class="bottom">
-      <div class="instructions">
-        Kontrole: Strelice / WASD za pomicanje. Na mobitelu koristite strelice na ekranu.
-      </div>
-      <div class="meta"><strong id="target">Mete: 5</strong></div>
-    </div>
+  <div id="game-area"></div>
 
-    <div class="mobile-joy" id="mobileJoy">
-      <button data-dir="up">▲</button>
-      <button data-dir="left">◀</button>
-      <button data-dir="down">▼</button>
-      <button data-dir="right">▶</button>
+  <div class="mobile-controls">
+    <button class="mobile-btn" id="btn-left"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="mobile-btn" id="btn-up"><i class="fa-solid fa-arrow-up"></i></button>
+    <button class="mobile-btn" id="btn-down"><i class="fa-solid fa-arrow-down"></i></button>
+    <button class="mobile-btn" id="btn-right"><i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+
+  <div id="rulesModal" class="modal">
+    <div class="modal-content">
+      <button id="closeModal" class="close-btn">✖</button>
+      <h2>Pravila igre</h2>
+      <p>Dobro došao u
+        <strong>
+          <span style="color: gold;">
+            <i class="fa-solid fa-star"></i>
+          </span>
+          Star Eater
+          <span style="color: gold;">
+            <i class="fa-solid fa-star"></i>
+          </span>
+        </strong> retro arkadnu avanturu u kojoj u svojoj raketi na zvjezdani pogon bježiš od zločestih svemiraca koji žele tehnologiju zvjezdanog pogona kako bi zavladali svemirom!</p>
+        <p>Pokušaj što duže jedući zvijezde svojom raketom izbjegavati svemirske zloće prolazeći kroz sve teže razine.</p>
+        <p>Da bi napredovao na sljedeću razinu moraš pojesti 10 zlatnih zvijezda
+          <span style="color: gold;">
+            <i class="fa-solid fa-star"></i>
+          </span>
+        sa svake razine. Srećom u svemiru postoje različite zvijezde koje tvoja raketa koristi na različite načine da ti pomogne u tvom bijegu.</p>
+      <ul>
+        <li>
+          <span style="color: gold;">
+            <i class="fa-solid fa-star"></i>
+          </span>
+          Žute zvijezde daju ti +1 bod, a trebaš ih pojesti 10 za prelazak na sljedeću razinu
+        </li>
+        <li>
+          <span style="color: greenyellow;">
+            <i class="fa-solid fa-star"></i>
+          </span>
+          Zelene zvijezde zamrzavaju svemirce na 1 sekundu
+        </li>
+        <li>
+            <span style="color: turquoise;">
+              <i class="fa-solid fa-star"></i>
+            </span>
+            Plave zvijezde ti na 10 sekundi daju moć da uništiš brodove svemiraca
+        </li>
+        <li>
+          <span style="color: darkred;">
+            <i class="fa-solid fa-rocket"></i>
+          </span>
+          Rakete tvojoj raketi daju +1 život
+        </li>
+        <li>
+          <span style="color: red;">
+            <i class="fa-solid fa-shuttle-space"></i>
+          </span>
+          <span style="color: green;">
+            <i class="fa-solid fa-shuttle-space"></i>
+          </span>
+          <span style="color: grey;">
+            <i class="fa-solid fa-shuttle-space"></i>
+          </span>
+          <span style="color: deeppink;">
+            <i class="fa-solid fa-shuttle-space"></i>
+          </span>
+          Svemirce moraš izbjegavati osim kad imaš moć plave zvijezde da ih uništiš
+        </li>
+      </ul>
+      <p id="desktop-note" class="controls-note">
+        <span style="color: lightgrey;">
+          <i class="fa-solid fa-laptop"></i>
+        </span>
+        Raketom upravljaš strelicama ili WASD tipkama.
+      </p>
+      <p id="mobile-note" class="controls-note">
+        <span style="color: lightgrey;">
+          <i class="fa-solid fa-mobile-screen"></i>
+        </span>
+        Za upravljanje raketom koristi strelice ispod ekrana.
+      </p>
     </div>
   </div>
 </body>
-
 </html>
