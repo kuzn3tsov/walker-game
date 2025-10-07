@@ -1,2 +1,2 @@
 # walker-game
-Jednostavna igra
+Ne više tako ednostavna igra
